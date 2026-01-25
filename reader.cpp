@@ -12,7 +12,7 @@ using namespace std;
 struct Item {
     int profit;
     int weight;
-    int node;  // ciudad asignada (0-indexed)
+    int node;  
 };
 
 struct TTPInstance {
