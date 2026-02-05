@@ -143,23 +143,19 @@ public:
 
 class HillClimbingPicking : public TTPHeuristic {
 private:
-    // Mejora el picking plan haciendo flip de items (one-flip neighborhood)
+    // mejora el picking plan haciendo flip de items (one-flip neighborhood)
     bool improvePicking(TTPSolution& sol) {
         bool improved = false;
         
         for (int i = 0; i < instance.num_items; i++) {
-            // Flip item i (agregar si está en 0, quitar si está en 1)
             sol.pickingPlan[i] = 1 - sol.pickingPlan[i];
             
             double oldObj = sol.objective;
             evaluateSolution(sol);
             
-            // Verificar si es válido y mejora
             if (sol.isValid(instance) && sol.objective > oldObj) {
                 improved = true;
-                // Acepta la mejora y continúa (first improvement)
             } else {
-                // Revertir si no mejora o viola capacidad
                 sol.pickingPlan[i] = 1 - sol.pickingPlan[i];
                 sol.objective = oldObj;
             }
@@ -177,14 +173,11 @@ public:
     TTPSolution solve() override {
         TTPSolution sol;
         
-        // Tour fijo con Nearest Neighbor
         sol.tour = createNearestNeighborTour(0);
         
-        // Picking inicial con greedy
         sol.pickingPlan = createGreedyPickingPlan(sol.tour);
         evaluateSolution(sol);
         
-        // Mejorar picking con Hill Climbing
         int iterations = 0;
         while (improvePicking(sol) && iterations < 100) {
             iterations++;

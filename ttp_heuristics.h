@@ -160,12 +160,10 @@ public:
 // */
 
 // HEURÍSTICA F: Probabilistic Nearest Neighbor + 2-Opt Local Search
-
 class ProbabilisticNearestNeighbor2Opt : public TTPHeuristic {
 private:
     double temperature;  // Parámetro para controlar la aleatoriedad
     
-    // Crear tour usando selección probabilística basada en distancias
     vector<int> createProbabilisticNearestNeighborTour(int start = 0) {
         vector<int> tour;
         vector<bool> visited(instance.dimension, false);
@@ -175,7 +173,6 @@ private:
         visited[current] = true;
         
         for (int i = 1; i < instance.dimension; i++) {
-            // Recopilar ciudades no visitadas y sus distancias
             vector<int> candidates;
             vector<double> distances;
             
@@ -186,9 +183,6 @@ private:
                 }
             }
             
-            // Calcular probabilidades usando Softmax con temperatura
-            // P(i) = exp(-dist_i / T) / Σ exp(-dist_j / T)
-            // Distancias más cortas → mayor probabilidad
             vector<double> probabilities;
             double sumExp = 0.0;
             
@@ -198,12 +192,10 @@ private:
                 sumExp += expValue;
             }
             
-            // Normalizar probabilidades
             for (double& prob : probabilities) {
                 prob /= sumExp;
             }
             
-            // Selección por ruleta (roulette wheel selection)
             double randValue = ((double)rand() / RAND_MAX);
             double cumulative = 0.0;
             int selectedIdx = 0;
@@ -225,7 +217,6 @@ private:
         return tour;
     }
     
-    // Mejora 2-opt (igual que LocalSearch2Opt)
     bool improve2Opt(TTPSolution& sol) {
         bool improved = false;
         int n = sol.tour.size();
@@ -249,7 +240,6 @@ private:
     }
     
 public:
-    // Constructor con temperatura ajustable
     ProbabilisticNearestNeighbor2Opt(const TTPInstance& inst, double temp = 0.5) 
         : TTPHeuristic(inst), temperature(temp) {
         srand(time(0));
@@ -263,18 +253,14 @@ public:
     TTPSolution solve() override {
         TTPSolution sol;
         
-        // FASE 1: Construcción probabilística del tour
         sol.tour = createProbabilisticNearestNeighborTour(0);
-        
-        // FASE 2: Picking greedy inicial
+
         sol.pickingPlan = createGreedyPickingPlan(sol.tour);
         evaluateSolution(sol);
         
-        // FASE 3: Mejora con 2-opt
         int iterations = 0;
         while (improve2Opt(sol) && iterations < 100) {
             iterations++;
-            // Recalcular picking después de mejorar tour
             sol.pickingPlan = createGreedyPickingPlan(sol.tour);
             evaluateSolution(sol);
         }
@@ -287,12 +273,13 @@ public:
     }
 };
 
+//Limitar vecindario (el espacio de búsqueda), 2-opt + or-opt para mejorar la mejora xd y SA como opcion de 2-opt - PROBARTODO Y TENER TABLAS
+
 class LNS_TTP : public TTPHeuristic {
 private:
     int destroySize;
     int maxIterations;
     
-    // Destruir k ciudades aleatoriamente del tour
     vector<int> destroyTour(const vector<int>& tour, int k) {
         vector<int> removed;
         vector<int> partial = tour;
@@ -307,7 +294,6 @@ private:
         return removed;
     }
     
-    // Reconstruir insertando ciudades en mejores posiciones
     vector<int> reconstructTour(vector<int> partial, const vector<int>& removed) {
         for (int city : removed) {
             int bestPos = 1;
@@ -333,7 +319,6 @@ private:
         return partial;
     }
     
-    // Mejora 2-Opt
     bool improve2Opt(TTPSolution& sol) {
         bool improved = false;
         int n = sol.tour.size();
@@ -368,7 +353,6 @@ public:
     }
     
     TTPSolution solve() override {
-        // Solución inicial
         TTPSolution best;
         best.tour = createNearestNeighborTour(0);
         best.pickingPlan = createGreedyPickingPlan(best.tour);
@@ -377,10 +361,8 @@ public:
         TTPSolution current = best;
         
         for (int iter = 0; iter < maxIterations; iter++) {
-            // 1. DESTRUCCIÓN
             vector<int> removed = destroyTour(current.tour, destroySize);
             
-            // Crear tour parcial (sin las ciudades removidas)
             vector<int> partial = current.tour;
             for (int city : removed) {
                 auto it = find(partial.begin(), partial.end(), city);
@@ -388,27 +370,23 @@ public:
                     partial.erase(it);
                 }
             }
-            
-            // 2. RECONSTRUCCIÓN
+
             current.tour = reconstructTour(partial, removed);
             
-            // 3. MEJORA LOCAL con 2-Opt
             current.pickingPlan = createGreedyPickingPlan(current.tour);
             evaluateSolution(current);
             
             int localIter = 0;
-            while (improve2Opt(current) && localIter < 50) {
+            while (improve2Opt(current) && localIter < 5) {
                 current.pickingPlan = createGreedyPickingPlan(current.tour);
                 evaluateSolution(current);
                 localIter++;
             }
-            
-            // 4. ACEPTACIÓN
+
             if (current.objective > best.objective) {
                 best = current;
             }
-            
-            // Reiniciar desde la mejor cada cierto número de iteraciones
+
             if (iter % 10 == 0) {
                 current = best;
             }
@@ -423,7 +401,7 @@ private:
     int maxIterations;
     int kmax;
     
-    // Shaking: perturbación aleatoria de tamaño k
+    // shaking: perturbación aleatoria de tamaño k
     void shaking(TTPSolution& sol, int k) {
         for (int i = 0; i < k; i++) {
             int pos1 = 1 + rand() % (sol.tour.size() - 1);
@@ -432,7 +410,6 @@ private:
         }
     }
     
-    // Mejora 2-Opt
     bool improve2Opt(TTPSolution& sol) {
         bool improved = false;
         int n = sol.tour.size();
@@ -467,7 +444,6 @@ public:
     }
     
     TTPSolution solve() override {
-        // Solución inicial
         TTPSolution best;
         best.tour = createNearestNeighborTour(0);
         best.pickingPlan = createGreedyPickingPlan(best.tour);
@@ -477,25 +453,23 @@ public:
         int k = 1;
         
         while (iter < maxIterations) {
-            // 1. SHAKING
+
             TTPSolution current = best;
             shaking(current, k);
             
-            // 2. BÚSQUEDA LOCAL con 2-Opt
             current.pickingPlan = createGreedyPickingPlan(current.tour);
             evaluateSolution(current);
             
             int localIter = 0;
-            while (improve2Opt(current) && localIter < 50) {
+            while (improve2Opt(current) && localIter < 5) {
                 current.pickingPlan = createGreedyPickingPlan(current.tour);
                 evaluateSolution(current);
                 localIter++;
             }
             
-            // 3. CAMBIO DE VECINDARIO
             if (current.objective > best.objective) {
                 best = current;
-                k = 1;  // Volver al vecindario más pequeño
+                k = 1; 
             } else {
                 k++;
                 if (k > kmax) {

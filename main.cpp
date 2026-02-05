@@ -31,13 +31,13 @@ int main(int argc, char* argv[]) {
     
     experiment.addHeuristic(new HillClimbingPicking(instance));
 
-    experiment.addHeuristic(new LNS_TTP(instance, 5, 30));
-    experiment.addHeuristic(new LNS_TTP(instance, 10, 30)); 
-    experiment.addHeuristic(new LNS_TTP(instance, 15, 30));
+    experiment.addHeuristic(new LNS_TTP(instance, 15, 100));
+    experiment.addHeuristic(new LNS_TTP(instance, 30, 150)); 
+    experiment.addHeuristic(new LNS_TTP(instance, 50, 200));
 
-    experiment.addHeuristic(new VNS_TTP(instance, 50, 3));
-    experiment.addHeuristic(new VNS_TTP(instance, 50, 5)); 
-    experiment.addHeuristic(new VNS_TTP(instance, 100, 5)); 
+    experiment.addHeuristic(new VNS_TTP(instance, 100, 5));
+    experiment.addHeuristic(new VNS_TTP(instance, 200, 7)); 
+    experiment.addHeuristic(new VNS_TTP(instance, 300, 10)); 
 
 
 
