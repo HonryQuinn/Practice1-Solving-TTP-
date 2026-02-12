@@ -308,8 +308,6 @@ public:
     }
 };
 
-// HEURÍSTICAS BALANCEADAS CON PICKING ADAPTATIVO
-
 class BalancedTTPHeuristic : public TTPHeuristic {
 protected:
     // Picking adaptativo: ajusta capacidad según longitud del tour
