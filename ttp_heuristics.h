@@ -310,11 +310,9 @@ public:
 
 class BalancedTTPHeuristic : public TTPHeuristic {
 protected:
-    // Picking adaptativo: ajusta capacidad según longitud del tour
     vector<int> createAdaptivePickingPlan(const vector<int>& tour, double fillRatio = 0.70) {
         vector<int> pickingPlan(instance.num_items, 0);
-        
-        // Calcular distancia total del tour
+    
         double distanciaTotal = 0;
         for (int i = 0; i < instance.dimension; i++) {
             int from = tour[i];
@@ -322,16 +320,13 @@ protected:
             distanciaTotal += instance.distances[from][to];
         }
         
-        // Ajustar capacidad según longitud del tour
         double tourFactor = 1.0;
         if (distanciaTotal > 50000) tourFactor = 0.6;
         else if (distanciaTotal > 45000) tourFactor = 0.7;
         else if (distanciaTotal > 40000) tourFactor = 0.8;
         
-        // CORRECCIÓN CRÍTICA: asegurar que capacidadObjetivo nunca exceda instance.capacity
         int capacidadObjetivo = min((int)(instance.capacity * fillRatio * tourFactor), instance.capacity);
         
-        // Greedy por ratio ganancia/peso
         vector<pair<double, int>> itemRatios;
         for (int i = 0; i < instance.num_items; i++) {
             double ratio = (double)instance.items[i].profit / instance.items[i].weight;
@@ -342,7 +337,6 @@ protected:
         int currentWeight = 0;
         for (auto& p : itemRatios) {
             int itemIdx = p.second;
-            // CORRECCIÓN: doble verificación contra capacidad real
             if (currentWeight + instance.items[itemIdx].weight <= capacidadObjetivo &&
                 currentWeight + instance.items[itemIdx].weight <= instance.capacity) {
                 pickingPlan[itemIdx] = 1;
@@ -353,11 +347,9 @@ protected:
         return pickingPlan;
     }
     
-    // Mejora del picking evaluando objetivo completo
     bool improvePickingWithObjective(TTPSolution& sol, int maxFlips = 50) {
         bool improved = false;
-        
-        // CORRECCIÓN: Asegurar que empezamos con solución válida
+
         if (!sol.isValid(instance)) {
             evaluateSolution(sol);
             return false;
@@ -410,7 +402,6 @@ protected:
         return improved;
     }
     
-    // 2-Opt limitado (igual que OptimizedTTPHeuristic)
     bool improve2OptLimited(TTPSolution& sol, int maxNeighbors = 20) {
         bool improved = false;
         int n = sol.tour.size();
@@ -435,7 +426,6 @@ protected:
         return improved;
     }
     
-    // Mejora conjunta: tour + picking
     void jointImprovement(TTPSolution& sol, int maxIter = 3) {
         for (int iter = 0; iter < maxIter; iter++) {
             bool improved = false;
@@ -456,7 +446,6 @@ public:
     BalancedTTPHeuristic(const TTPInstance& inst) : TTPHeuristic(inst) {}
 };
 
-// Hill Climbing mejorado con picking adaptativo
 class ImprovedHillClimbing : public BalancedTTPHeuristic {
 public:
     ImprovedHillClimbing(const TTPInstance& inst) : BalancedTTPHeuristic(inst) {}
@@ -477,7 +466,6 @@ public:
     }
 };
 
-// 2-Opt con picking balanceado
 class Balanced2Opt : public BalancedTTPHeuristic {
 public:
     Balanced2Opt(const TTPInstance& inst) : BalancedTTPHeuristic(inst) {}
@@ -490,25 +478,23 @@ public:
         TTPSolution sol;
         sol.tour = createNearestNeighborTour(0);
         
-        // IMPORTANTE: Inicializar picking ANTES de 2-Opt
         sol.pickingPlan = createAdaptivePickingPlan(sol.tour, 0.70);
         evaluateSolution(sol);
         
-        // Mejorar tour
+        // mejorar tour
         improve2OptLimited(sol, 20);
         
-        // Re-optimizar picking
+        // re-optimizar picking
         sol.pickingPlan = createAdaptivePickingPlan(sol.tour, 0.70);
         evaluateSolution(sol);
         
-        // Mejora conjunta
+        // mejora conjunta
         jointImprovement(sol, 5);
         
         return sol;
     }
 };
 
-// LNS con picking balanceado
 class BalancedLNS : public BalancedTTPHeuristic {
 private:
     int destroySize;
@@ -606,7 +592,6 @@ public:
     }
 };
 
-// VNS con picking balanceado
 class BalancedVNS : public BalancedTTPHeuristic {
 private:
     int maxIterations;
