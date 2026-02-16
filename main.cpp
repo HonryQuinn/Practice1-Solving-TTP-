@@ -21,12 +21,12 @@ int main(int argc, char* argv[]) {
     
     // ========== HEURÍSTICAS OPTIMIZADAS (2-Opt + Or-Opt) ==========
     
-    experiment.addHeuristic(new LocalSearch2Opt(instance));
+    // experiment.addHeuristic(new LocalSearch2Opt(instance));
     
-    experiment.addHeuristic(new ProbabilisticNearestNeighbor2Opt(instance, 0.3));
-    experiment.addHeuristic(new ProbabilisticNearestNeighbor2Opt(instance, 0.5));
-    experiment.addHeuristic(new ProbabilisticNearestNeighbor2Opt(instance, 1.0));
-    experiment.addHeuristic(new ProbabilisticNearestNeighbor2Opt(instance, 2.0));
+    // experiment.addHeuristic(new ProbabilisticNearestNeighbor2Opt(instance, 0.3));
+    // experiment.addHeuristic(new ProbabilisticNearestNeighbor2Opt(instance, 0.5));
+    // experiment.addHeuristic(new ProbabilisticNearestNeighbor2Opt(instance, 1.0));
+    // experiment.addHeuristic(new ProbabilisticNearestNeighbor2Opt(instance, 2.0));
     
     // ========== HEURÍSTICAS COMENTADAS (desactivadas) ==========
 
