@@ -6,6 +6,7 @@
 #include <string>
 #include <limits>
 #include <algorithm>
+#include <cmath>
 
 using namespace std;
 
@@ -21,22 +22,19 @@ struct TTPSolution {
                     profit(0), time(0), weight(0) {}
     
     bool isValid(const TTPInstance& inst) const {
-        return weight <= inst.capacity && tour.size() == inst.dimension;
+        return weight <= inst.capacity && tour.size() == (size_t)inst.dimension;
     }
-    
 };
-
 
 class TTPHeuristic {
 protected:
     const TTPInstance& instance;
     
 public:
-    TTPHeuristic(const TTPInstance& inst) : instance(inst) {}  //cons
-    virtual ~TTPHeuristic() {} // des
+    TTPHeuristic(const TTPInstance& inst) : instance(inst) {}
+    virtual ~TTPHeuristic() {}
     
     virtual TTPSolution solve() = 0;
-    
     virtual string getName() const = 0;
     
     void evaluateSolution(TTPSolution& sol) {
@@ -52,7 +50,7 @@ public:
         }
 
         if (sol.weight > instance.capacity) {
-            sol.objective = -1e9;  // Penalización masiva
+            sol.objective = -1e9;
             sol.time = 1e9;
             return;
         }
@@ -82,8 +80,6 @@ public:
         sol.objective = sol.profit - sol.time * instance.renting_ratio;
     }
     
-    // FUNCIONES AUXILIARES PARA CREAR TOURS Y PICKING PLANS
-
     vector<int> createSequentialTour() {
         vector<int> tour(instance.dimension);
         for (int i = 0; i < instance.dimension; i++) {
@@ -94,7 +90,7 @@ public:
     
     vector<int> createRandomTour() {
         vector<int> tour = createSequentialTour();
-        random_shuffle(tour.begin() + 1, tour.end()); // mantener ciudad 0 al inicio
+        random_shuffle(tour.begin() + 1, tour.end());
         return tour;
     }
     
@@ -154,7 +150,6 @@ public:
 
 class HillClimbingPicking : public TTPHeuristic {
 private:
-    // mejora el picking plan haciendo flip de items (one-flip neighborhood)
     bool improvePicking(TTPSolution& sol) {
         bool improved = false;
         
@@ -183,9 +178,7 @@ public:
     
     TTPSolution solve() override {
         TTPSolution sol;
-        
         sol.tour = createNearestNeighborTour(0);
-        
         sol.pickingPlan = createGreedyPickingPlan(sol.tour);
         evaluateSolution(sol);
         
@@ -198,16 +191,44 @@ public:
     }
 };
 
+// ============================================================
+// ESTADÍSTICAS Y EXPERIMENTOS CON MÚLTIPLES EJECUCIONES
+// ============================================================
+
+struct HeuristicStats {
+    string name;
+    double avg_objective;
+    double avg_profit;
+    double avg_time;
+    double avg_weight;
+    double best_objective;
+    double worst_objective;
+    double std_dev_objective;
+    
+    HeuristicStats() : avg_objective(0), avg_profit(0), avg_time(0), 
+                       avg_weight(0), best_objective(-1e9), 
+                       worst_objective(1e9), std_dev_objective(0) {}
+};
 
 class TTPExperiment {
 private:
     const TTPInstance& instance;
     vector<TTPHeuristic*> heuristics;
+    int num_runs;
+    
+    double calculateStdDev(const vector<double>& values, double mean) {
+        double sum = 0.0;
+        for (double val : values) {
+            sum += (val - mean) * (val - mean);
+        }
+        return sqrt(sum / values.size());
+    }
     
 public:
-    TTPExperiment(const TTPInstance& inst) : instance(inst) {}   // constructor
+    TTPExperiment(const TTPInstance& inst, int runs = 1) 
+        : instance(inst), num_runs(runs) {}
     
-    ~TTPExperiment() {                        // destructor
+    ~TTPExperiment() {
         for (auto h : heuristics) {
             delete h;
         }
@@ -218,39 +239,131 @@ public:
     }
     
     void runAll() {
-        cout << "  Experimento TTP" << endl;
+        cout << "\n========================================" << endl;
+        cout << "       EXPERIMENTO TTP" << endl;
+        cout << "========================================" << endl;
         cout << "Instancia: " << instance.name << endl;
         cout << "Ciudades: " << instance.dimension << endl;
         cout << "Items: " << instance.num_items << endl;
         cout << "Capacidad: " << instance.capacity << endl;
+        cout << "Ejecuciones por heuristica: " << num_runs << endl;
+        cout << "========================================\n" << endl;
         
-        TTPSolution bestSolution;
-        string bestHeuristic;
+        vector<HeuristicStats> allStats;
+        TTPSolution globalBest;
+        string globalBestHeuristic;
         
         for (auto heuristic : heuristics) {
-            cout << " Ejecutando: " << heuristic->getName() << endl;
+            cout << ">>> Ejecutando: " << heuristic->getName() << " <<<" << endl;
             
-            TTPSolution solution = heuristic->solve();
+            HeuristicStats stats;
+            stats.name = heuristic->getName();
             
-            cout << "  Objetivo: " << solution.objective << endl;
-            cout << "  Ganancia: " << solution.profit << endl;
-            cout << "  Tiempo: " << solution.time << endl;
-            cout << "  Peso usado: " << solution.weight << "/" << instance.capacity << endl;
-            cout << "  Válida: " << (solution.isValid(instance) ? "Sí" : "No") << endl;
-            cout << endl;
+            vector<double> objectives;
+            vector<double> profits;
+            vector<double> times;
+            vector<double> weights;
             
-            if (solution.objective > bestSolution.objective) {
-                bestSolution = solution;
-                bestHeuristic = heuristic->getName();
+            // Ejecutar múltiples veces
+            for (int run = 1; run <= num_runs; run++) {
+                if (num_runs > 1) {
+                    cout << "  [Run " << run << "/" << num_runs << "] ";
+                }
+                
+                TTPSolution solution = heuristic->solve();
+                
+                objectives.push_back(solution.objective);
+                profits.push_back(solution.profit);
+                times.push_back(solution.time);
+                weights.push_back(solution.weight);
+                
+                if (num_runs > 1) {
+                    cout << "Objetivo: " << solution.objective << endl;
+                }
+                
+                // Actualizar mejor global
+                if (solution.objective > globalBest.objective) {
+                    globalBest = solution;
+                    globalBestHeuristic = heuristic->getName();
+                }
+                
+                // Actualizar mejor/peor de esta heurística
+                if (solution.objective > stats.best_objective) {
+                    stats.best_objective = solution.objective;
+                }
+                if (solution.objective < stats.worst_objective) {
+                    stats.worst_objective = solution.objective;
+                }
             }
+            
+            // Calcular promedios
+            for (double val : objectives) stats.avg_objective += val;
+            for (double val : profits) stats.avg_profit += val;
+            for (double val : times) stats.avg_time += val;
+            for (double val : weights) stats.avg_weight += val;
+            
+            stats.avg_objective /= num_runs;
+            stats.avg_profit /= num_runs;
+            stats.avg_time /= num_runs;
+            stats.avg_weight /= num_runs;
+            
+            // Calcular desviación estándar
+            if (num_runs > 1) {
+                stats.std_dev_objective = calculateStdDev(objectives, stats.avg_objective);
+            }
+            
+            allStats.push_back(stats);
+            
+            // Mostrar resultados de esta heurística
+            cout << "\n  RESULTADOS:" << endl;
+            if (num_runs > 1) {
+                cout << "    Objetivo Promedio: " << stats.avg_objective 
+                     << " (±" << stats.std_dev_objective << ")" << endl;
+                cout << "    Mejor: " << stats.best_objective << endl;
+                cout << "    Peor: " << stats.worst_objective << endl;
+                cout << "    Ganancia Promedio: " << stats.avg_profit << endl;
+                cout << "    Tiempo Promedio: " << stats.avg_time << endl;
+                cout << "    Peso Promedio: " << stats.avg_weight 
+                     << "/" << instance.capacity << endl;
+            } else {
+                cout << "    Objetivo: " << stats.avg_objective << endl;
+                cout << "    Ganancia: " << stats.avg_profit << endl;
+                cout << "    Tiempo: " << stats.avg_time << endl;
+                cout << "    Peso: " << stats.avg_weight 
+                     << "/" << instance.capacity << endl;
+            }
+            cout << endl;
         }
         
-        cout << " Mejor solución: " << endl;
-        cout << "Heurística: " << bestHeuristic << endl;
-        cout << "Objetivo: " << bestSolution.objective << endl;
-        cout << "Ganancia: " << bestSolution.profit << endl;
-        cout << "Tiempo: " << bestSolution.time << endl;
-        cout << "Peso: " << bestSolution.weight << endl;
+        // Resumen final
+        cout << "\n========================================" << endl;
+        cout << "       RESUMEN FINAL" << endl;
+        cout << "========================================" << endl;
+        
+        // Ordenar por mejor objetivo promedio
+        sort(allStats.begin(), allStats.end(), 
+             [](const HeuristicStats& a, const HeuristicStats& b) {
+                 return a.avg_objective > b.avg_objective;
+             });
+        
+        cout << "\nRanking por Objetivo Promedio:\n" << endl;
+        for (size_t i = 0; i < allStats.size(); i++) {
+            cout << (i+1) << ". " << allStats[i].name << endl;
+            cout << "   Objetivo: " << allStats[i].avg_objective;
+            if (num_runs > 1) {
+                cout << " (±" << allStats[i].std_dev_objective << ")";
+            }
+            cout << endl;
+        }
+        
+        cout << "\n========================================" << endl;
+        cout << "MEJOR SOLUCION GLOBAL:" << endl;
+        cout << "Heuristica: " << globalBestHeuristic << endl;
+        cout << "Objetivo: " << globalBest.objective << endl;
+        cout << "Ganancia: " << globalBest.profit << endl;
+        cout << "Tiempo: " << globalBest.time << endl;
+        cout << "Peso: " << globalBest.weight << "/" << instance.capacity << endl;
+        cout << "========================================\n" << endl;
     }
 };
 

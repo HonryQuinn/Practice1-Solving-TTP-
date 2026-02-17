@@ -4,7 +4,8 @@
 
 int main(int argc, char* argv[]) {
     if (argc < 2) {
-        cerr << "Uso: " << argv[0] << " <archivo_ttp>" << endl;
+        cerr << "Uso: " << argv[0] << " <archivo_ttp> [num_ejecuciones]" << endl;
+        cerr << "  num_ejecuciones: numero de veces a ejecutar cada heuristica (default: 5)" << endl;
         return 1;
     }
     
@@ -13,13 +14,24 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     
+    // Obtener número de ejecuciones (default: 5)
+    int num_runs = 5;
+    if (argc >= 3) {
+        num_runs = atoi(argv[2]);
+        if (num_runs < 1) {
+            cerr << "Error: num_ejecuciones debe ser >= 1" << endl;
+            return 1;
+        }
+    }
+    
     printInstanceInfo(instance);
     
-    cout << "EXPERIMENTO TTP - HEURÍSTICAS" << endl;
+    cout << "\nEXPERIMENTO TTP - HEURISTICAS" << endl;
+    cout << "Numero de ejecuciones por heuristica: " << num_runs << endl;
   
-    TTPExperiment experiment(instance);
+    TTPExperiment experiment(instance, num_runs);
     
-    // ========== HEURÍSTICAS OPTIMIZADAS (2-Opt + Or-Opt) ==========
+    // ========== HEURISTICAS OPTIMIZADAS (2-Opt + Or-Opt) ==========
     
     // experiment.addHeuristic(new LocalSearch2Opt(instance));
     
@@ -28,18 +40,18 @@ int main(int argc, char* argv[]) {
     // experiment.addHeuristic(new ProbabilisticNearestNeighbor2Opt(instance, 1.0));
     // experiment.addHeuristic(new ProbabilisticNearestNeighbor2Opt(instance, 2.0));
     
-    // ========== HEURÍSTICAS COMENTADAS (desactivadas) ==========
+    // ========== HEURISTICAS COMENTADAS (desactivadas) ==========
 
     // experiment.addHeuristic(new SequentialNoItems(instance));
     // experiment.addHeuristic(new NearestNeighborGreedy(instance));
     // experiment.addHeuristic(new RandomTourGreedy(instance));
     // experiment.addHeuristic(new HighProfitPicking(instance));
     
-    // ========== HEURÍSTICA BASELINE ==========
+    // ========== HEURISTICA BASELINE ==========
     
     experiment.addHeuristic(new HillClimbingPicking(instance));
     
-    // ========== HEURÍSTICAS BALANCEADAS (Picking Adaptativo) ==========
+    // ========== HEURISTICAS BALANCEADAS (Picking Adaptativo) ==========
     
     experiment.addHeuristic(new ImprovedHillClimbing(instance));
     experiment.addHeuristic(new Balanced2Opt(instance));
