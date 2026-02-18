@@ -239,15 +239,14 @@ public:
     }
     
     void runAll() {
-        cout << "\n========================================" << endl;
+        cout << "\n---------------------------------------" << endl;
         cout << "       EXPERIMENTO TTP" << endl;
-        cout << "========================================" << endl;
         cout << "Instancia: " << instance.name << endl;
         cout << "Ciudades: " << instance.dimension << endl;
         cout << "Items: " << instance.num_items << endl;
         cout << "Capacidad: " << instance.capacity << endl;
         cout << "Ejecuciones por heuristica: " << num_runs << endl;
-        cout << "========================================\n" << endl;
+        cout << "-----------------------------------------\n" << endl;
         
         vector<HeuristicStats> allStats;
         TTPSolution globalBest;
@@ -264,7 +263,6 @@ public:
             vector<double> times;
             vector<double> weights;
             
-            // Ejecutar múltiples veces
             for (int run = 1; run <= num_runs; run++) {
                 if (num_runs > 1) {
                     cout << "  [Run " << run << "/" << num_runs << "] ";
@@ -281,13 +279,11 @@ public:
                     cout << "Objetivo: " << solution.objective << endl;
                 }
                 
-                // Actualizar mejor global
                 if (solution.objective > globalBest.objective) {
                     globalBest = solution;
                     globalBestHeuristic = heuristic->getName();
                 }
                 
-                // Actualizar mejor/peor de esta heurística
                 if (solution.objective > stats.best_objective) {
                     stats.best_objective = solution.objective;
                 }
@@ -296,7 +292,7 @@ public:
                 }
             }
             
-            // Calcular promedios
+            // prom
             for (double val : objectives) stats.avg_objective += val;
             for (double val : profits) stats.avg_profit += val;
             for (double val : times) stats.avg_time += val;
@@ -307,14 +303,12 @@ public:
             stats.avg_time /= num_runs;
             stats.avg_weight /= num_runs;
             
-            // Calcular desviación estándar
             if (num_runs > 1) {
-                stats.std_dev_objective = calculateStdDev(objectives, stats.avg_objective);
+                stats.std_dev_objective = calculateStdDev(objectives, stats.avg_objective);  //desviación estándar del objetivo
             }
             
             allStats.push_back(stats);
             
-            // Mostrar resultados de esta heurística
             cout << "\n  RESULTADOS:" << endl;
             if (num_runs > 1) {
                 cout << "    Objetivo Promedio: " << stats.avg_objective 
@@ -335,12 +329,8 @@ public:
             cout << endl;
         }
         
-        // Resumen final
-        cout << "\n========================================" << endl;
         cout << "       RESUMEN FINAL" << endl;
-        cout << "========================================" << endl;
         
-        // Ordenar por mejor objetivo promedio
         sort(allStats.begin(), allStats.end(), 
              [](const HeuristicStats& a, const HeuristicStats& b) {
                  return a.avg_objective > b.avg_objective;

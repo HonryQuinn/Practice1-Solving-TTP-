@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
     }
     
     // Obtener número de ejecuciones (default: 5)
-    int num_runs = 5;
+    int num_runs = 10;
     if (argc >= 3) {
         num_runs = atoi(argv[2]);
         if (num_runs < 1) {
@@ -62,9 +62,11 @@ int main(int argc, char* argv[]) {
     experiment.addHeuristic(new BalancedLNS(instance, 20, 40));
     
     // VNS Balanceado (diferentes configuraciones)
+/* 
     experiment.addHeuristic(new BalancedVNS(instance, 30, 3));
     experiment.addHeuristic(new BalancedVNS(instance, 50, 5));
     experiment.addHeuristic(new BalancedVNS(instance, 80, 7));
+*/
     
     // ========== EJECUTAR EXPERIMENTO ==========
     

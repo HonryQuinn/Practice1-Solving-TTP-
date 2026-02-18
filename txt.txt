@@ -1,0 +1,246 @@
+=== Información de la Instancia TTP ===
+Nombre:         a280-TTP
+Ciudades: 280
+Items: 279
+Capacidad mochila: 25936
+Velocidad mín: 0.1
+Velocidad máx: 1
+Ratio de alquiler: 5.61
+
+Primeras 5 ciudades:
+  Ciudad 0: (288, 149)
+  Ciudad 1: (288, 129)
+  Ciudad 2: (270, 133)
+  Ciudad 3: (256, 141)
+  Ciudad 4: (256, 157)
+
+Primeros 5 items:
+  Item 0: profit=101, weight=1, ciudad=1
+  Item 1: profit=202, weight=2, ciudad=2
+  Item 2: profit=404, weight=4, ciudad=3
+  Item 3: profit=202, weight=2, ciudad=4
+  Item 4: profit=996, weight=896, ciudad=5
+
+EXPERIMENTO TTP - HEURISTICAS
+Numero de ejecuciones por heuristica: 10
+
+---------------------------------------
+       EXPERIMENTO TTP
+Instancia:      a280-TTP
+Ciudades: 280
+Items: 279
+Capacidad: 25936
+Ejecuciones por heuristica: 10
+-----------------------------------------
+
+>>> Ejecutando: Nearest Neighbor Tour + Hill Climbing Picking <<<
+  [Run 1/10] Objetivo: 9683.12
+  [Run 2/10] Objetivo: 9683.12
+  [Run 3/10] Objetivo: 9683.12
+  [Run 4/10] Objetivo: 9683.12
+  [Run 5/10] Objetivo: 9683.12
+  [Run 6/10] Objetivo: 9683.12
+  [Run 7/10] Objetivo: 9683.12
+  [Run 8/10] Objetivo: 9683.12
+  [Run 9/10] Objetivo: 9683.12
+  [Run 10/10] Objetivo: 9683.12
+
+  RESULTADOS:
+    Objetivo Promedio: 9683.12 (±1.81899e-12)
+    Mejor: 9683.12
+    Peor: 9683.12
+    Ganancia Promedio: 36170
+    Tiempo Promedio: 4721.37
+    Peso Promedio: 23670/25936
+
+>>> Ejecutando: Improved Hill Climbing (Adaptive Picking 75%) <<<
+  [Run 1/10] Objetivo: 10031.2
+  [Run 2/10] Objetivo: 10031.2
+  [Run 3/10] Objetivo: 10031.2
+  [Run 4/10] Objetivo: 10031.2
+  [Run 5/10] Objetivo: 10031.2
+  [Run 6/10] Objetivo: 10031.2
+  [Run 7/10] Objetivo: 10031.2
+  [Run 8/10] Objetivo: 10031.2
+  [Run 9/10] Objetivo: 10031.2
+  [Run 10/10] Objetivo: 10031.2
+
+  RESULTADOS:
+    Objetivo Promedio: 10031.2 (±1.81899e-12)
+    Mejor: 10031.2
+    Peor: 10031.2
+    Ganancia Promedio: 36787
+    Tiempo Promedio: 4769.3
+    Peso Promedio: 24087/25936
+
+>>> Ejecutando: 2-Opt + Balanced Picking (70%) <<<
+  [Run 1/10] Objetivo: 9878.18
+  [Run 2/10] Objetivo: 9878.18
+  [Run 3/10] Objetivo: 9878.18
+  [Run 4/10] Objetivo: 9878.18
+  [Run 5/10] Objetivo: 9878.18
+  [Run 6/10] Objetivo: 9878.18
+  [Run 7/10] Objetivo: 9878.18
+  [Run 8/10] Objetivo: 9878.18
+  [Run 9/10] Objetivo: 9878.18
+  [Run 10/10] Objetivo: 9878.18
+
+  RESULTADOS:
+    Objetivo Promedio: 9878.18 (±1.81899e-12)
+    Mejor: 9878.18
+    Peor: 9878.18
+    Ganancia Promedio: 36928
+    Tiempo Promedio: 4821.72
+    Peso Promedio: 24128/25936
+
+>>> Ejecutando: Balanced LNS (destroy=10, iter=20) <<<
+  [Run 1/10] Objetivo: 13083.9
+  [Run 2/10] Objetivo: 12142.5
+  [Run 3/10] Objetivo: 12491.9
+  [Run 4/10] Objetivo: 11455.8
+  [Run 5/10] Objetivo: 12693.5
+  [Run 6/10] Objetivo: 12149.1
+  [Run 7/10] Objetivo: 11204.3
+  [Run 8/10] Objetivo: 11561.1
+  [Run 9/10] Objetivo: 12321.8
+  [Run 10/10] Objetivo: 12694.2
+
+  RESULTADOS:
+    Objetivo Promedio: 12179.8 (±576.587)
+    Mejor: 13083.9
+    Peor: 11204.3
+    Ganancia Promedio: 37831.5
+    Tiempo Promedio: 4572.49
+    Peso Promedio: 25301.5/25936
+
+>>> Ejecutando: Balanced LNS (destroy=15, iter=30) <<<
+  [Run 1/10] Objetivo: 12191.7
+  [Run 2/10] Objetivo: 12307.9
+  [Run 3/10] Objetivo: 13362.8
+  [Run 4/10] Objetivo: 13052.7
+  [Run 5/10] Objetivo: 13281.8
+  [Run 6/10] Objetivo: 13879.1
+  [Run 7/10] Objetivo: 13315.9
+  [Run 8/10] Objetivo: 12001
+  [Run 9/10] Objetivo: 13359.1
+  [Run 10/10] Objetivo: 12989.5
+
+  RESULTADOS:
+    Objetivo Promedio: 12974.1 (±577.852)
+    Mejor: 13879.1
+    Peor: 12001
+    Ganancia Promedio: 38063.6
+    Tiempo Promedio: 4472.27
+    Peso Promedio: 25473.6/25936
+
+>>> Ejecutando: Balanced LNS (destroy=20, iter=40) <<<
+  [Run 1/10] Objetivo: 14025.3
+  [Run 2/10] Objetivo: 14476
+  [Run 3/10] Objetivo: 14043.7
+  [Run 4/10] Objetivo: 13381
+  [Run 5/10] Objetivo: 13145.7
+  [Run 6/10] Objetivo: 13658.9
+  [Run 7/10] Objetivo: 13006.5
+  [Run 8/10] Objetivo: 13511.5
+  [Run 9/10] Objetivo: 13648.6
+  [Run 10/10] Objetivo: 13489.8
+
+  RESULTADOS:
+    Objetivo Promedio: 13638.7 (±419.814)
+    Mejor: 14476
+    Peor: 13006.5
+    Ganancia Promedio: 38191.4
+    Tiempo Promedio: 4376.59
+    Peso Promedio: 25691.4/25936
+
+>>> Ejecutando: Balanced VNS (kmax=3, iter=30) <<<
+  [Run 1/10] Objetivo: 6625.52
+  [Run 2/10] Objetivo: 8860.76
+  [Run 3/10] Objetivo: 9902.27
+  [Run 4/10] Objetivo: 8394.78
+  [Run 5/10] Objetivo: 9364.17
+  [Run 6/10] Objetivo: 9902.27
+  [Run 7/10] Objetivo: 8740.65
+  [Run 8/10] Objetivo: 9643.08
+  [Run 9/10] Objetivo: 9339.98
+  [Run 10/10] Objetivo: 8990.33
+
+  RESULTADOS:
+    Objetivo Promedio: 8976.38 (±915.18)
+    Mejor: 9902.27
+    Peor: 6625.52
+    Ganancia Promedio: 36658.2
+    Tiempo Promedio: 4934.37
+    Peso Promedio: 24058.2/25936
+
+>>> Ejecutando: Balanced VNS (kmax=5, iter=50) <<<
+  [Run 1/10] Objetivo: 7527.81
+  [Run 2/10] Objetivo: 9242.97
+  [Run 3/10] Objetivo: 3654.91
+  [Run 4/10] Objetivo: 8883.72
+  [Run 5/10] Objetivo: 9336.97
+  [Run 6/10] Objetivo: 9183.9
+  [Run 7/10] Objetivo: 6176.84
+  [Run 8/10] Objetivo: 8755.83
+  [Run 9/10] Objetivo: 9210.53
+  [Run 10/10] Objetivo: 7260.68
+
+  RESULTADOS:
+    Objetivo Promedio: 7923.41 (±1745.46)
+    Mejor: 9336.97
+    Peor: 3654.91
+    Ganancia Promedio: 36475.5
+    Tiempo Promedio: 5089.5
+    Peso Promedio: 24045.5/25936
+
+>>> Ejecutando: Balanced VNS (kmax=7, iter=80) <<<
+  [Run 1/10] Objetivo: 9902.27
+  [Run 2/10] Objetivo: 8860.97
+  [Run 3/10] Objetivo: 9961.26
+  [Run 4/10] Objetivo: 6980.94
+  [Run 5/10] Objetivo: 8832.21
+  [Run 6/10] Objetivo: 9285.48
+  [Run 7/10] Objetivo: 8862.01
+  [Run 8/10] Objetivo: 9120.22
+  [Run 9/10] Objetivo: 7933.66
+  [Run 10/10] Objetivo: 9902.27
+
+  RESULTADOS:
+    Objetivo Promedio: 8964.13 (±889.691)
+    Mejor: 9961.26
+    Peor: 6980.94
+    Ganancia Promedio: 36700.1
+    Tiempo Promedio: 4944.02
+    Peso Promedio: 24100.1/25936
+
+       RESUMEN FINAL
+
+Ranking por Objetivo Promedio:
+
+1. Balanced LNS (destroy=20, iter=40)
+   Objetivo: 13638.7 (±419.814)
+2. Balanced LNS (destroy=15, iter=30)
+   Objetivo: 12974.1 (±577.852)
+3. Balanced LNS (destroy=10, iter=20)
+   Objetivo: 12179.8 (±576.587)
+4. Improved Hill Climbing (Adaptive Picking 75%)
+   Objetivo: 10031.2 (±1.81899e-12)
+5. 2-Opt + Balanced Picking (70%)
+   Objetivo: 9878.18 (±1.81899e-12)
+6. Nearest Neighbor Tour + Hill Climbing Picking
+   Objetivo: 9683.12 (±1.81899e-12)
+7. Balanced VNS (kmax=3, iter=30)
+   Objetivo: 8976.38 (±915.18)
+8. Balanced VNS (kmax=7, iter=80)
+   Objetivo: 8964.13 (±889.691)
+9. Balanced VNS (kmax=5, iter=50)
+   Objetivo: 7923.41 (±1745.46)
+
+========================================
+MEJOR SOLUCION GLOBAL:
+Heuristica: Balanced LNS (destroy=20, iter=40)
+Objetivo: 14476
+Ganancia: 38815
+Tiempo: 4338.5
+Peso: 25915/25936
+========================================
