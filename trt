@@ -1,0 +1,19 @@
+./simulador "./Instances/a280/n1395/UNcorrelatedSimilarWeights/a280_n1395_uncorr-similar-weights_01.ttp"
+
+./simulador "./Instances/a280/n1395/UNcorrelatedSimilarWeights/a280_n1395_uncorr-similar-weights_05.ttp"
+
+./simulador "./Instances/a280/n1395/UNcorrelatedSimilarWeights/a280_n1395_uncorr-similar-weights_10.ttp"
+
+
+./simulador "./Instances/a280/n2790/BoundedStrongly Correlated/a280_n2790_bounded-strongly-corr_01.ttp"
+
+./simulador "./Instances/a280/n2790/BoundedStrongly Correlated/a280_n2790_bounded-strongly-corr_05.ttp"
+
+./simulador "./Instances/a280/n2790/BoundedStrongly Correlated/a280_n2790_bounded-strongly-corr_10.ttp"
+
+
+./simulador "./Instances/a280/n2790/Unorrelated/a280_n2790_uncorr_01.ttp"
+
+./simulador "./Instances/a280/n2790/Unorrelated/a280_n2790_uncorr_05.ttp"
+
+./simulador "./Instances/a280/n2790/Unorrelated/a280_n2790_uncorr_10.ttp"
