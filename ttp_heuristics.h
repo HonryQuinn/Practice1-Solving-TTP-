@@ -6,105 +6,102 @@
 #include <ctime>
 #include <cmath>
 
-// /*
-// // HEURÍSTICA A: Tour secuencial + Sin recoger items
-// class SequentialNoItems : public TTPHeuristic {
-// public:
-//     SequentialNoItems(const TTPInstance& inst) : TTPHeuristic(inst) {}
-//     
-//     string getName() const override {
-//         return "Sequential Tour + No Items";
-//     }
-//     
-//     TTPSolution solve() override {
-//         TTPSolution sol;
-//         sol.tour = createSequentialTour();
-//         sol.pickingPlan = createEmptyPickingPlan();
-//         evaluateSolution(sol);
-//         return sol;
-//     }
-// };
-// */
 
-// /*
-// // HEURÍSTICA B: Vecino más cercano + Picking greedy
-// class NearestNeighborGreedy : public TTPHeuristic {
-// public:
-//     NearestNeighborGreedy(const TTPInstance& inst) : TTPHeuristic(inst) {}
-//     
-//     string getName() const override {
-//         return "Nearest Neighbor + Greedy Picking";
-//     }
-//     
-//     TTPSolution solve() override {
-//         TTPSolution sol;
-//         sol.tour = createNearestNeighborTour(0);
-//         sol.pickingPlan = createGreedyPickingPlan(sol.tour);
-//         evaluateSolution(sol);
-//         return sol;
-//     }
-// };
-// */
+// HEURÍSTICA A: Tour secuencial + Sin recoger items
+class SequentialNoItems : public TTPHeuristic {
+public:
+     SequentialNoItems(const TTPInstance& inst) : TTPHeuristic(inst) {}
+     
+     string getName() const override {
+         return "Sequential Tour + No Items";
+     }
+     
+     TTPSolution solve() override {
+         TTPSolution sol;
+         sol.tour = createSequentialTour();
+         sol.pickingPlan = createEmptyPickingPlan();
+         evaluateSolution(sol);
+         return sol;
+     }
+ };
 
-// /*
+
+ // HEURÍSTICA B: Vecino más cercano + Picking greedy
+ class NearestNeighborGreedy : public TTPHeuristic {
+ public:
+     NearestNeighborGreedy(const TTPInstance& inst) : TTPHeuristic(inst) {}
+     
+     string getName() const override {
+         return "Nearest Neighbor + Greedy Picking";
+     }
+     
+     TTPSolution solve() override {
+         TTPSolution sol;
+         sol.tour = createNearestNeighborTour(0);
+         sol.pickingPlan = createGreedyPickingPlan(sol.tour);
+         evaluateSolution(sol);
+         return sol;
+     }
+ };
+
+
 // // HEURÍSTICA C: Tour aleatorio + Picking greedy
-// class RandomTourGreedy : public TTPHeuristic {
-// public:
-//     RandomTourGreedy(const TTPInstance& inst) : TTPHeuristic(inst) {
-//         srand(time(0));
-//     }
-//     
-//     string getName() const override {
-//         return "Random Tour + Greedy Picking";
-//     }
-//     
-//     TTPSolution solve() override {
-//         TTPSolution sol;
-//         sol.tour = createRandomTour();
-//         sol.pickingPlan = createGreedyPickingPlan(sol.tour);
-//         evaluateSolution(sol);
-//         return sol;
-//     }
-// };
-// */
+ class RandomTourGreedy : public TTPHeuristic {
+ public:
+     RandomTourGreedy(const TTPInstance& inst) : TTPHeuristic(inst) {
+         srand(time(0));
+     }
+     
+     string getName() const override {
+         return "Random Tour + Greedy Picking";
+     }
+     
+     TTPSolution solve() override {
+         TTPSolution sol;
+         sol.tour = createRandomTour();
+         sol.pickingPlan = createGreedyPickingPlan(sol.tour);
+         evaluateSolution(sol);
+         return sol;
+     }
+ };
 
-// /*
+
 // // HEURÍSTICA E: Picking basado en profit absoluto
-// class HighProfitPicking : public TTPHeuristic {
-// public:
-//     HighProfitPicking(const TTPInstance& inst) : TTPHeuristic(inst) {}
-//     
-//     string getName() const override {
-//         return "Nearest Neighbor + High Profit Picking";
-//     }
-//     
-//     TTPSolution solve() override {
-//         TTPSolution sol;
-//         sol.tour = createNearestNeighborTour(0);
-//         
-//         // Crear picking plan basado en profit absoluto
-//         vector<pair<int, int>> itemsByProfit; // (profit, index)
-//         for (int i = 0; i < instance.num_items; i++) {
-//             itemsByProfit.push_back({instance.items[i].profit, i});
-//         }
-//         sort(itemsByProfit.rbegin(), itemsByProfit.rend());
-//         
-//         sol.pickingPlan = createEmptyPickingPlan();
-//         int currentWeight = 0;
-//         
-//         for (auto& p : itemsByProfit) {
-//             int itemIdx = p.second;
-//             if (currentWeight + instance.items[itemIdx].weight <= instance.capacity) {
-//                 sol.pickingPlan[itemIdx] = 1;
-//                 currentWeight += instance.items[itemIdx].weight;
-//             }
-//         }
-//         
-//         evaluateSolution(sol);
-//         return sol;
-//     }
-// };
-// */
+class HighProfitPicking : public TTPHeuristic {
+public:
+    HighProfitPicking(const TTPInstance& inst) : TTPHeuristic(inst) {}
+     
+     string getName() const override {
+         return "Nearest Neighbor + High Profit Picking";
+    }
+    
+     TTPSolution solve() override {
+         TTPSolution sol;
+         sol.tour = createNearestNeighborTour(0);
+         
+         // Crear picking plan basado en profit absoluto
+         vector<pair<int, int>> itemsByProfit; // (profit, index)
+         for (int i = 0; i < instance.num_items; i++) {
+             itemsByProfit.push_back({instance.items[i].profit, i});
+         }
+         sort(itemsByProfit.rbegin(), itemsByProfit.rend());
+         
+         sol.pickingPlan = createEmptyPickingPlan();
+         int currentWeight = 0;
+         
+         for (auto& p : itemsByProfit) {
+             int itemIdx = p.second;
+             if (currentWeight + instance.items[itemIdx].weight <= instance.capacity) {
+                 sol.pickingPlan[itemIdx] = 1;
+                 currentWeight += instance.items[itemIdx].weight;
+             }
+         }
+         
+         evaluateSolution(sol);
+         return sol;
+     }
+ };
+
 
 // ============================================================================
 // HEURÍSTICAS OPTIMIZADAS CON 2-OPT + OR-OPT

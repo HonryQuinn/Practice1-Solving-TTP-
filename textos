@@ -1,0 +1,150 @@
+=== Información de la Instancia TTP ===
+Nombre:         a280-TTP
+Ciudades: 280
+Items: 837
+Capacidad mochila: 189310
+Velocidad mín: 0.1
+Velocidad máx: 1
+Ratio de alquiler: 44.22
+
+Primeras 5 ciudades:
+  Ciudad 0: (288, 149)
+  Ciudad 1: (288, 129)
+  Ciudad 2: (270, 133)
+  Ciudad 3: (256, 141)
+  Ciudad 4: (256, 157)
+
+Primeros 5 items:
+  Item 0: profit=119, weight=1, ciudad=1
+  Item 1: profit=187, weight=896, ciudad=2
+  Item 2: profit=997, weight=367, ciudad=3
+  Item 3: profit=22, weight=690, ciudad=4
+  Item 4: profit=347, weight=613, ciudad=5
+
+EXPERIMENTO TTP - HEURISTICAS
+Numero de ejecuciones por heuristica: 5
+
+---------------------------------------
+       EXPERIMENTO TTP
+Instancia:      a280-TTP
+Ciudades: 280
+Items: 837
+Capacidad: 189310
+Ejecuciones por heuristica: 5
+-----------------------------------------
+
+>>> Ejecutando: Balanced LNS (destroy=10, iter=20) <<<
+  [Run 1/5] Objetivo: 54708.7
+  [Run 2/5] Objetivo: 51062.2
+  [Run 3/5] Objetivo: 51061.5
+  [Run 4/5] Objetivo: 55296.1
+  [Run 5/5] Objetivo: 48364.4
+
+  RESULTADOS:
+    Objetivo Promedio: 52098.6 (±2574.11)
+    Mejor: 55296.1
+    Peor: 48364.4
+    Ganancia Promedio: 254288
+    Tiempo Promedio: 4572.36
+    Peso Promedio: 130848/189310
+
+>>> Ejecutando: Balanced LNS (destroy=15, iter=30) <<<
+  [Run 1/5] Objetivo: 56608.7
+  [Run 2/5] Objetivo: 52600.7
+  [Run 3/5] Objetivo: 55045
+  [Run 4/5] Objetivo: 57353.1
+  [Run 5/5] Objetivo: 56829.6
+
+  RESULTADOS:
+    Objetivo Promedio: 55687.4 (±1724.44)
+    Mejor: 57353.1
+    Peor: 52600.7
+    Ganancia Promedio: 256006
+    Tiempo Promedio: 4530.04
+    Peso Promedio: 132973/189310
+
+>>> Ejecutando: Balanced LNS (destroy=20, iter=40) <<<
+  [Run 1/5] Objetivo: 59141.8
+  [Run 2/5] Objetivo: 58730.2
+  [Run 3/5] Objetivo: 58661.5
+  [Run 4/5] Objetivo: 57730.3
+  [Run 5/5] Objetivo: 59782
+
+  RESULTADOS:
+    Objetivo Promedio: 58809.2 (±670.7)
+    Mejor: 59782
+    Peor: 57730.3
+    Ganancia Promedio: 257813
+    Tiempo Promedio: 4500.31
+    Peso Promedio: 134911/189310
+
+>>> Ejecutando: Balanced VNS (kmax=3, iter=30) <<<
+  [Run 1/5] Objetivo: 32997.4
+  [Run 2/5] Objetivo: 36614.8
+  [Run 3/5] Objetivo: 36696.6
+  [Run 4/5] Objetivo: 27896.6
+  [Run 5/5] Objetivo: 22275.6
+
+  RESULTADOS:
+    Objetivo Promedio: 31296.2 (±5536.66)
+    Mejor: 36696.6
+    Peor: 22275.6
+    Ganancia Promedio: 247515
+    Tiempo Promedio: 4889.62
+    Peso Promedio: 123715/189310
+
+>>> Ejecutando: Balanced VNS (kmax=5, iter=50) <<<
+  [Run 1/5] Objetivo: 23346.8
+  [Run 2/5] Objetivo: 32441
+  [Run 3/5] Objetivo: 30353.3
+  [Run 4/5] Objetivo: 29754.4
+  [Run 5/5] Objetivo: 30228.4
+
+  RESULTADOS:
+    Objetivo Promedio: 29224.8 (±3080.77)
+    Mejor: 32441
+    Peor: 23346.8
+    Ganancia Promedio: 247441
+    Tiempo Promedio: 4934.79
+    Peso Promedio: 123689/189310
+
+>>> Ejecutando: Balanced VNS (kmax=7, iter=80) <<<
+  [Run 1/5] Objetivo: 24734.9
+  [Run 2/5] Objetivo: 41154.5
+  [Run 3/5] Objetivo: 36728.5
+  [Run 4/5] Objetivo: 24636.5
+  [Run 5/5] Objetivo: 24673
+
+  RESULTADOS:
+    Objetivo Promedio: 30385.5 (±7124.86)
+    Mejor: 41154.5
+    Peor: 24636.5
+    Ganancia Promedio: 246928
+    Tiempo Promedio: 4896.93
+    Peso Promedio: 123195/189310
+
+       RESUMEN FINAL
+
+Ranking por Objetivo Promedio:
+
+1. Balanced LNS (destroy=20, iter=40)
+   Objetivo: 58809.2 (±670.7)
+2. Balanced LNS (destroy=15, iter=30)
+   Objetivo: 55687.4 (±1724.44)
+3. Balanced LNS (destroy=10, iter=20)
+   Objetivo: 52098.6 (±2574.11)
+4. Balanced VNS (kmax=3, iter=30)
+   Objetivo: 31296.2 (±5536.66)
+5. Balanced VNS (kmax=7, iter=80)
+   Objetivo: 30385.5 (±7124.86)
+6. Balanced VNS (kmax=5, iter=50)
+   Objetivo: 29224.8 (±3080.77)
+
+========================================
+MEJOR SOLUCION GLOBAL:
+Heuristica: Balanced LNS (destroy=20, iter=40)
+Objetivo: 59782
+Ganancia: 259154
+Tiempo: 4508.64
+Peso: 136890/189310
+========================================
