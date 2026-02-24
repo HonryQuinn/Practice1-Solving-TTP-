@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
     }
     
     // Obtener número de ejecuciones (default: 5)
-    int num_runs = 5;
+    int num_runs = 1;
     if (argc >= 3) {
         num_runs = atoi(argv[2]);
         if (num_runs < 1) {
@@ -50,14 +50,14 @@ int main(int argc, char* argv[]) {
     //experiment.addHeuristic(new ImprovedHillClimbing(instance));
     //experiment.addHeuristic(new Balanced2Opt(instance));
     
-    experiment.addHeuristic(new BalancedLNS(instance, 10, 20));
-    experiment.addHeuristic(new BalancedLNS(instance, 15, 30));
+    //experiment.addHeuristic(new BalancedLNS(instance, 10, 20));
+    //experiment.addHeuristic(new BalancedLNS(instance, 15, 30));
     experiment.addHeuristic(new BalancedLNS(instance, 20, 40));
     
 
-    experiment.addHeuristic(new BalancedVNS(instance, 30, 3));
-    experiment.addHeuristic(new BalancedVNS(instance, 50, 5));
-    experiment.addHeuristic(new BalancedVNS(instance, 80, 7));
+    //experiment.addHeuristic(new BalancedVNS(instance, 30, 3));
+    //experiment.addHeuristic(new BalancedVNS(instance, 50, 5));
+    //experiment.addHeuristic(new BalancedVNS(instance, 80, 7));
 
     
     experiment.runAll();
