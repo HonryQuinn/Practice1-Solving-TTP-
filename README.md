@@ -21,8 +21,6 @@ Objetivo = Ganancia Total - Ratio de Alquiler * Tiempo Total de Viaje
 ├── base1.h             # Estructuras de datos, clase base de heuristicas, logica de evaluacion y experimento
 ├── ttp_heuristics.h    # Implementacion de todas las heuristicas
 ├── simulador           # Binario compilado (Linux x86-64)
-├── textos              # Salida de ejemplo de ejecuciones sobre distintas instancias
-├── trt                 # Comandos de shell de ejemplo para ejecutar el simulador
 └── README.md
 ```
 
