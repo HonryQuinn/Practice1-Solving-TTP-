@@ -1,4 +1,4 @@
-# Practica 1 - Resolucion del Travelling Thief Problem
+# Practica 1 - Resolución del Travelling Thief Problem
 
 Este proyecto implementa y evalua un conjunto de heuristicas para resolver el **Travelling Thief Problem (TTP)** en C++. El TTP es un problema de optimizacion combinatoria que combina dos problemas clasicos NP-Dificiles: el Problema del Viajante (TSP) y el Problema de la Mochila (KP). El objetivo es maximizar la ganancia neta, definida como el valor total de los objetos recogidos menos el costo de alquiler de la mochila durante el tiempo total de viaje.
 
